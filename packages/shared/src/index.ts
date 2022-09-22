@@ -57,6 +57,7 @@ export const isFunction = (val: unknown): val is Function =>
   typeof val === 'function'
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isSymbol = (val: unknown): val is symbol => typeof val === 'symbol'
+// 类型保护， al is Record 类型谓词，每当调用isObject这个函数的时候，传入任意的值必须是Record这个函数里的一个参数名，这个函数定义了任意的泛型，返回的是一个是否是对象的布尔值判断，并且不能为空
 export const isObject = (val: unknown): val is Record<any, any> =>
   val !== null && typeof val === 'object'
 
@@ -65,6 +66,9 @@ export const isPromise = <T = any>(val: unknown): val is Promise<T> => {
 }
 
 export const objectToString = Object.prototype.toString
+// 类型判断，调用toTypeString这个函数的时候，传入一个安全的任意类型（unknown），并且一定要是字符串，然后通过Object.prototype.toString.call()的方式判断到底是不是字符串
+// unknown 和 any 的主要区别是 unknown 类型会更加严格：在对 unknown 类型的值执行大多数操作之前，我们必须进行某种形式的检查。而在对 any 类型的值执行操作之前，我们不必进行任何检查。
+// (value: unknown): string 可能是表示参数必须是unknown类型，返回值是string类型
 export const toTypeString = (value: unknown): string =>
   objectToString.call(value)
 

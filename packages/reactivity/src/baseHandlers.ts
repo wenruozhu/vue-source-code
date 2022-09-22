@@ -87,11 +87,11 @@ function createArrayInstrumentations() {
 
 function createGetter(isReadonly = false, shallow = false) {
   return function get(target: Target, key: string | symbol, receiver: object) {
-    if (key === ReactiveFlags.IS_REACTIVE) {
+    if (key === ReactiveFlags.IS_REACTIVE) { //__v_isReactive
       return !isReadonly
-    } else if (key === ReactiveFlags.IS_READONLY) {
+    } else if (key === ReactiveFlags.IS_READONLY) { //__v_isReadonly
       return isReadonly
-    } else if (key === ReactiveFlags.IS_SHALLOW) {
+    } else if (key === ReactiveFlags.IS_SHALLOW) { //__v_isShallow
       return shallow
     } else if (
       key === ReactiveFlags.RAW &&
@@ -212,11 +212,11 @@ function ownKeys(target: object): (string | symbol)[] {
 }
 
 export const mutableHandlers: ProxyHandler<object> = {
-  get,
-  set,
-  deleteProperty,
-  has,
-  ownKeys
+  get, // 用于拦截对象的读取属性操作
+  set, // 用于拦截对象的设置属性操作
+  deleteProperty, // 用于拦截对象的删除属性操作
+  has, // 检查一个对象是否拥有某个属性
+  ownKeys // 针对 getOwnPropertyNames,  getOwnPropertySymbols, keys 的代理方法
 }
 
 export const readonlyHandlers: ProxyHandler<object> = {

@@ -33,7 +33,10 @@ import { isRef } from './ref'
 import { warn } from './warning'
 
 const isNonTrackableKeys = /*#__PURE__*/ makeMap(`__proto__,__v_isRef,__isVue`)
-
+// 定义了一个Set集合类
+// Object.getOwnPropertyNames(Symbol) 返回symbol所有的可枚举和不可枚举属性名称字符串
+// map(key => (Symbol as any)[key]) 转换成js是 map(function (key) { return Symbol[key]; })， as any 的目的是为了防止 TS 编译器抱怨，因为从类型上 key 和 Symbol 无关联，你直接拿 key 访问会让 TS 害怕访问到不存在的属性
+// filter(value => typeof value === 'symbol') 筛选出值的类型是symbol的数据
 const builtInSymbols = new Set(
   /*#__PURE__*/
   Object.getOwnPropertyNames(Symbol)
@@ -216,7 +219,7 @@ export const mutableHandlers: ProxyHandler<object> = {
   set, // 用于拦截对象的设置属性操作
   deleteProperty, // 用于拦截对象的删除属性操作
   has, // 检查一个对象是否拥有某个属性
-  ownKeys // 针对 getOwnPropertyNames,  getOwnPropertySymbols, keys 的代理方法
+  ownKeys // 方法用于拦截 Object.getOwnPropertyNames() Object.getOwnPropertySymbols() Object.keys() for…in循环
 }
 
 export const readonlyHandlers: ProxyHandler<object> = {
